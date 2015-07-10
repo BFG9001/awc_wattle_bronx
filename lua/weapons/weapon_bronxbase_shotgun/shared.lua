@@ -1,5 +1,5 @@
 
-SWEP.Base = "weapon_wattlebase_bullet"
+SWEP.Base = "weapon_bronxbase_bullet"
 
 /*---------------------------------------------------------
    Name: SWEP:Reload( )

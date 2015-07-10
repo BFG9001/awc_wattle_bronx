@@ -15,9 +15,10 @@ SWEP.Purpose 					= ""
 SWEP.Instructions 				= ""
 
 SWEP.ViewModel					= "models/weapons/cstrike/c_rif_sg552.mdl"
-SWEP.WorldModel					= "models/weapons/w_smg1.mdl"
+SWEP.WorldModel					= "models/weapons/w_rif_m4a1.mdl"
 SWEP.ViewModelFlip 				= false
 SWEP.ViewModelFOV 				= 52
+SWEP.ShowWorldModel = false
 
 SWEP.Weight 					= 5
 SWEP.AutoSwitchFrom 			= false
@@ -30,7 +31,7 @@ SWEP.DrawWeaponInfoBox 			= true
 SWEP.DrawAmmo 					= true
 SWEP.DrawCrosshair 				= false
 //SWEP.RenderGroup 				= 
-SWEP.Slot 						= 1
+SWEP.Slot 						= 2
 SWEP.SlotPos 					= 1
 //SWEP.WepSelection 				= 
 SWEP.CSMuzzleFlashes 			= true
