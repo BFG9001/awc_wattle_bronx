@@ -123,7 +123,9 @@ function SWEP:SecondaryAttack() --Melee attack
 	self.FAT = CurTime() + self.Secondary.Delay
 	self:EmitSound(self.Secondary.Sound)
 	--print("rip")
+	self:GetOwner():LagCompensation(true)
 	self:MeleeAttack()
+	self:GetOwner():LagCompensation(false)
 end
 
 function SWEP:MeleeAttack()
