@@ -102,7 +102,9 @@ SWEP.Zoom 						= 50
 SWEP.SetFATOnShoot 				= false
 SWEP.CVFireAnimIroned			= false
 
-SWEP.DTFloats = {}
+SWEP.DTFloats = {
+	"LMT" //Last Melee Time
+}
 SWEP.DTBools = {}
 SWEP.DTInts = {}
 
@@ -110,10 +112,13 @@ SWEP.ViewModelBoneMods = {}
 SWEP.VElements = {}
 SWEP.WElements = {}
 
+SWEP.MeleePos = { Vector(0,0,0), Vector(4.215, -7.862, -9.079), Vector(4.215, -7.862, 3.246) }
+SWEP.MeleeAng = { Angle(0,0,0), Angle(28.361, 33.673, -1.783), Angle(-14.16, 70, -1.783) }
 
 function SWEP:SecondaryAttack() --Melee attack
 	self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
 	self:SetNextPrimaryFire(CurTime() + self.Secondary.Delay * (2/3))
+	self:SetLMT(CurTime())
 	self:EmitSound(self.Secondary.Sound)
 	--print("rip")
 	self:MeleeAttack()
@@ -153,4 +158,50 @@ function SWEP:MeleeAttack()
 			v:TakeDamageInfo(dmginfo)
 		end
 	end
+end
+
+
+//Animation stuff
+SWEP.MeleeOldLMT = 0
+SWEP.meleeviewmodel = {}
+SWEP.meleeviewmodel.origin = Vector(0,0,0)
+SWEP.meleeviewmodel.angles = Angle(0,0,0)
+function SWEP:WatViewModelCalcViewMelee( ply, origin, angles, fov )
+	/*
+	if(ply:KeyPressed(IN_ATTACK2) && self.MeleeOldLMT < self:GetLMT()) then
+
+		//self.meleeviewmodel.origin = Bezier(self.MeleePos[1], self.MeleePos[2], self.MeleePos[3], 1)
+		//self.meleeviewmodel.angles = Bezier(self.MeleeAng[1], self.MeleeAng[2], self.MeleeAng[3], 1)
+		self.MeleeOldLMT = self:GetLMT()
+	end
+	*/
+	local MeleeAnimProg = (CurTime() - self:GetLMT())/(self.Secondary.Delay*0.25)
+	if(MeleeAnimProg <= 1) then
+		self.meleeviewmodel.origin = Bezier(self.MeleePos[1], self.MeleePos[2], self.MeleePos[3], MeleeAnimProg)
+		self.meleeviewmodel.angles = Bezier(self.MeleeAng[1], self.MeleeAng[2], self.MeleeAng[3], MeleeAnimProg)
+	else
+		self.meleeviewmodel.origin = SmoothApproachVector(self.meleeviewmodel.origin, Vector(0,0,0), FrameTime()*5)
+		self.meleeviewmodel.angles = SmoothApproachAngle(self.meleeviewmodel.angles, Angle(0,0,0), FrameTime()*5)
+	end
+	
+	//self.cvfaiviewmodel.origin.y = SmoothApproach(self.cvfaiviewmodel.origin.y, 0, FrameTime()*10)
+	
+	return self.meleeviewmodel
+end
+
+
+//Replaceable per weapon
+function SWEP:WatViewModelCalcView( ply, origin, angles, fov )
+	//different targviewmodels, modules
+	local base = self:WatViewModelCalcViewBase( ply, origin, angles, fov )
+	local inspect = self:WatViewModelCalcViewInspect( ply, origin, angles, fov )
+	local sway = self:WatViewModelCalcViewSway( ply, origin, angles, fov )
+	local cvfai = self:WatViewModelCalcViewFireAnimIroned( ply, origin, angles, fov )
+	local melee = self:WatViewModelCalcViewMelee( ply, origin, angles, fov )
+	
+	local viewmodel = {}
+	viewmodel.origin = base.origin + inspect.origin + sway.origin + cvfai.origin + melee.origin
+	viewmodel.angles = base.angles + inspect.angles + sway.angles + cvfai.angles + melee.angles
+	
+	return viewmodel
 end
