@@ -47,7 +47,7 @@ SWEP.Secondary.DefaultClip 		= -1
 SWEP.Secondary.Ammo 			= "none"
 SWEP.Secondary.Automatic 		= false
 --Melee stuff
-SWEP.Secondary.Damage = 20
+SWEP.Secondary.Damage = 22
 SWEP.Secondary.Delay = .85
 SWEP.Secondary.Sound = Sound("weapons/knife/knife_swing_miss1.wav")
 
