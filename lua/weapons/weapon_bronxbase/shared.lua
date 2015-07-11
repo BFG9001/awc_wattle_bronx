@@ -119,6 +119,8 @@ function SWEP:SecondaryAttack() --Melee attack
 	self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
 	self:SetNextPrimaryFire(CurTime() + self.Secondary.Delay * (2/3))
 	self:SetLMT(CurTime())
+	self:SetFAT(CurTime() + self.Secondary.Delay)
+	self.FAT = CurTime() + self.Secondary.Delay
 	self:EmitSound(self.Secondary.Sound)
 	--print("rip")
 	self:MeleeAttack()
@@ -175,7 +177,7 @@ function SWEP:WatViewModelCalcViewMelee( ply, origin, angles, fov )
 		self.MeleeOldLMT = self:GetLMT()
 	end
 	*/
-	local MeleeAnimProg = (CurTime() - self:GetLMT())/(self.Secondary.Delay*0.25)
+	local MeleeAnimProg = (CurTime()+(ply:Ping()/1000) - self:GetLMT())/(self.Secondary.Delay*0.25)
 	if(MeleeAnimProg <= 1) then
 		self.meleeviewmodel.origin = Bezier(self.MeleePos[1], self.MeleePos[2], self.MeleePos[3], MeleeAnimProg)
 		self.meleeviewmodel.angles = Bezier(self.MeleeAng[1], self.MeleeAng[2], self.MeleeAng[3], MeleeAnimProg)
