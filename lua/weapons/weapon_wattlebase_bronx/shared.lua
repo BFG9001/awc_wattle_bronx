@@ -61,6 +61,11 @@ SWEP.Primary.Tracer				= 0
 SWEP.Primary.TracerName			= "Tracer"
 SWEP.Primary.MuzzleEffects		= { "effect_bronx_muzzleflash", "effect_wat_muzzle_smoke", "effect_wat_muzzle_sparks" }
 
+--Melee stuff
+SWEP.Secondary.Damage = 30
+SWEP.Secondary.Delay = 1
+SWEP.Secondary.Sound = Sound("weapons/knife/knife_swing_miss1.wav")
+
 SWEP.RecoilPitchAdd 			= 1.2
 SWEP.RecoilPitchMul 			= 0.2
 SWEP.RecoilYawAdd 				= 0.5
@@ -105,7 +110,41 @@ SWEP.ViewModelBoneMods = {}
 SWEP.VElements = {}
 SWEP.WElements = {}
 
-function SWEP:SecondaryAttack() --Melee attack
 
+function SWEP:SecondaryAttack() --Melee attack
+	self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
+	self:EmitSound(self.Secondary.Sound)
+	--print("rip")
+	self:MeleeAttack()
 end
 
+function SWEP:MeleeAttack()
+	self:GetOwner():ViewPunch( Angle( 3, 3, 15) )
+	if SERVER then
+		local radius = 32
+		local origin = self:GetOwner():GetShootPos() + (self:GetOwner():EyeAngles():Forward() * (radius - 2))
+		local targets = ents.FindInSphere( origin, radius )
+		table.RemoveByValue( targets, self:GetOwner() )
+
+		local tr = self:GetOwner():GetEyeTrace()
+			if tr.HitPos:Distance(self:GetOwner():GetShootPos()) < 64 then
+				if tr.Entity == game.GetWorld() then self:GetOwner():EmitSound("physics/body/body_medium_impact_hard" .. math.random(1,6) .. ".wav") end
+			end
+
+		local dmginfo = DamageInfo()
+			dmginfo:SetAttacker(self:GetOwner())
+			dmginfo:SetInflictor(self)
+			dmginfo:SetDamage(self.Secondary.Damage)
+			dmginfo:SetDamageType(DMG_CLUB)
+			dmginfo:SetDamageForce( self:GetOwner():GetAimVector() * 125 )
+
+		for k, v in pairs( targets ) do
+			if v:IsWeapon() then continue end
+			if IsValid(v) and v.IsBronxCitizen then
+				v:BronxMeleeStun()
+			end
+			if IsValid(v) then v:EmitSound("physics/body/body_medium_impact_hard" .. math.random(1,6) .. ".wav") end
+			v:TakeDamageInfo(dmginfo)
+		end
+	end
+end

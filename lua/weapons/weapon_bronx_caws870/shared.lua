@@ -17,7 +17,7 @@ SWEP.Instructions 				= ""
 SWEP.ViewModel					= "models/weapons/c_smg1.mdl"
 SWEP.WorldModel					= "models/weapons/w_shot_m3super90.mdl"
 SWEP.ViewModelFlip 				= false
-SWEP.ViewModelFOV 				= 54
+SWEP.ViewModelFOV 				= 56
 SWEP.ShowWorldModel = false
 
 SWEP.Weight 					= 5
