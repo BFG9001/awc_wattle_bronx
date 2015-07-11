@@ -26,6 +26,6 @@ end
 
 function EFFECT:Think()
 	self.Life = self.Life + FrameTime() * 7.5
-	self.size = 40 * ( 1 - self.Life )	
+	self.size = 25 * ( 1 - self.Life )	
 	return (self.Life < 1)	
 end

@@ -62,8 +62,8 @@ SWEP.Primary.TracerName			= "Tracer"
 SWEP.Primary.MuzzleEffects		= { "effect_bronx_muzzleflash", "effect_wat_muzzle_smoke", "effect_wat_muzzle_sparks" }
 
 --Melee stuff
-SWEP.Secondary.Damage = 30
-SWEP.Secondary.Delay = 1
+SWEP.Secondary.Damage = 20
+SWEP.Secondary.Delay = .75
 SWEP.Secondary.Sound = Sound("weapons/knife/knife_swing_miss1.wav")
 
 SWEP.RecoilPitchAdd 			= 1.2
@@ -113,6 +113,7 @@ SWEP.WElements = {}
 
 function SWEP:SecondaryAttack() --Melee attack
 	self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
+	self:SetNextPrimaryFire(CurTime() + self.Secondary.Delay * (2/3))
 	self:EmitSound(self.Secondary.Sound)
 	--print("rip")
 	self:MeleeAttack()
@@ -120,6 +121,11 @@ end
 
 function SWEP:MeleeAttack()
 	self:GetOwner():ViewPunch( Angle( 3, 3, 15) )
+	self:SetHoldType("melee2")
+	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
+
+	timer.Simple( 0, function() if not IsValid(self) then return end self:SetHoldType(self.HoldType) end)
+
 	if SERVER then
 		local radius = 32
 		local origin = self:GetOwner():GetShootPos() + (self:GetOwner():EyeAngles():Forward() * (radius - 2))
