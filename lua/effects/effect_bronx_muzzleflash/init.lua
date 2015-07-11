@@ -25,7 +25,7 @@ function EFFECT:Render()
 end
 
 function EFFECT:Think()
-	self.Life = self.Life + FrameTime() * 7.5
-	self.size = 25 * ( 1 - self.Life )	
+	self.Life = self.Life + FrameTime() * 10
+	self.size = math.random(10,25)
 	return (self.Life < 1)	
 end
