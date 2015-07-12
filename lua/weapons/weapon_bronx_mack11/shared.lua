@@ -48,7 +48,7 @@ SWEP.Secondary.Automatic 		= false
 --Melee stuff
 SWEP.Secondary.Damage = 20
 SWEP.Secondary.Delay = .75
-SWEP.Secondary.Sound = Sound("weapons/knife/knife_swing_miss1.wav")
+SWEP.Secondary.Sound = Sound("weapons/slam/throw.wav")
 
 SWEP.UseHands 					= true
 SWEP.AccurateCrosshair 			= false

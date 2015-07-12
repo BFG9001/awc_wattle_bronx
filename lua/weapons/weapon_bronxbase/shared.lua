@@ -64,7 +64,7 @@ SWEP.Primary.MuzzleEffects		= { "effect_bronx_muzzleflash", "effect_wat_muzzle_s
 --Melee stuff
 SWEP.Secondary.Damage = 20
 SWEP.Secondary.Delay = .75
-SWEP.Secondary.Sound = Sound("weapons/knife/knife_swing_miss1.wav")
+SWEP.Secondary.Sound = Sound("weapons/slam/throw.wav")
 
 SWEP.RecoilPitchAdd 			= 1.2
 SWEP.RecoilPitchMul 			= 0.2
@@ -116,6 +116,7 @@ SWEP.MeleePos = { Vector(0,0,0), Vector(4.215, -7.862, -9.079), Vector(4.215, -7
 SWEP.MeleeAng = { Angle(0,0,0), Angle(28.361, 33.673, -1.783), Angle(-14.16, 70, -1.783) }
 
 function SWEP:SecondaryAttack() --Melee attack
+	if(self.Owner:KeyDown(IN_USE)) then return end --Weapon inspection
 	self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
 	self:SetNextPrimaryFire(CurTime() + self.Secondary.Delay * (2/3))
 	self:SetLMT(CurTime())
@@ -143,7 +144,7 @@ function SWEP:MeleeAttack()
 
 		local tr = self:GetOwner():GetEyeTrace()
 			if tr.HitPos:Distance(self:GetOwner():GetShootPos()) < 64 then
-				if tr.Entity == game.GetWorld() then self:GetOwner():EmitSound("physics/body/body_medium_impact_hard" .. math.random(1,6) .. ".wav") end
+				if tr.Entity == game.GetWorld() then self:GetOwner():EmitSound("physics/body/body_medium_impact_hard" .. math.random(1,6) .. ".wav") local fx = EffectData() fx:SetOrigin(tr.HitPos) util.Effect("effect_bronx_meleeimpact", fx) end
 			end
 
 		local dmginfo = DamageInfo()
@@ -151,14 +152,21 @@ function SWEP:MeleeAttack()
 			dmginfo:SetInflictor(self)
 			dmginfo:SetDamage(self.Secondary.Damage)
 			dmginfo:SetDamageType(DMG_CLUB)
-			dmginfo:SetDamageForce( self:GetOwner():GetAimVector() * 125 )
+			dmginfo:SetDamageForce( self:GetOwner():GetAimVector() * 420 )
 
 		for k, v in pairs( targets ) do
 			if v:IsWeapon() then continue end
 			if IsValid(v) and v.IsBronxCitizen then
 				v:BronxMeleeStun()
+				--v:SetVelocity(self:GetOwner():GetAimVector() * 500)
 			end
-			if IsValid(v) then v:EmitSound("physics/body/body_medium_impact_hard" .. math.random(1,6) .. ".wav") end
+			if IsValid(v) then 
+				v:EmitSound("physics/body/body_medium_impact_hard" .. math.random(1,6) .. ".wav") 
+				local trace = util.TraceHull({start = self:GetOwner():GetShootPos(), endpos = v:LocalToWorld(v:OBBCenter()), filter = function(ent) if ent == v then return true end end})
+					local fx = EffectData()
+						fx:SetOrigin(trace.HitPos + Vector(0,0,16))
+						util.Effect("effect_bronx_meleeimpact", fx)
+			end
 			v:TakeDamageInfo(dmginfo)
 		end
 	end
