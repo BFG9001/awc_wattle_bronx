@@ -136,7 +136,7 @@ function SWEP:MeleeAttack()
 
 	timer.Simple( 0, function() if not IsValid(self) then return end self:SetHoldType(self.HoldType) end)
 
-	if SERVER then
+	--if SERVER then
 		local radius = 36
 		local origin = self:GetOwner():GetShootPos() + (self:GetOwner():EyeAngles():Forward() * (radius - 3))
 		local targets = ents.FindInSphere( origin, radius )
@@ -156,7 +156,7 @@ function SWEP:MeleeAttack()
 
 		for k, v in pairs( targets ) do
 			if v:IsWeapon() then continue end
-			if IsValid(v) and v.IsBronxCitizen then
+			if IsValid(v) and v.IsBronxCitizen and SERVER then
 				v:BronxMeleeStun()
 				--v:SetVelocity(self:GetOwner():GetAimVector() * 500)
 			end
@@ -167,9 +167,9 @@ function SWEP:MeleeAttack()
 						fx:SetOrigin(trace.HitPos + Vector(0,0,16))
 						util.Effect("effect_bronx_meleeimpact", fx)
 			end
-			v:TakeDamageInfo(dmginfo)
+			if SERVER then v:TakeDamageInfo(dmginfo) end
 		end
-	end
+	--end --if SERVER then
 end
 
 
