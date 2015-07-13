@@ -63,7 +63,7 @@ SWEP.Primary.MuzzleEffects		= { "effect_bronx_muzzleflash", "effect_wat_muzzle_s
 
 --Melee stuff
 SWEP.Secondary.Damage = 20
-SWEP.Secondary.Delay = .75
+SWEP.Secondary.Delay = .85
 SWEP.Secondary.Sound = Sound("weapons/slam/throw.wav")
 
 SWEP.RecoilPitchAdd 			= 1.2
@@ -118,7 +118,7 @@ SWEP.MeleeAng = { Angle(0,0,0), Angle(28.361, 33.673, -1.783), Angle(-14.16, 70,
 function SWEP:SecondaryAttack() --Melee attack
 	if(self.Owner:KeyDown(IN_USE)) then return end --Weapon inspection
 	self:SetNextSecondaryFire(CurTime() + self.Secondary.Delay)
-	self:SetNextPrimaryFire(CurTime() + self.Secondary.Delay * (2/3))
+	self:SetNextPrimaryFire(CurTime() + self.Secondary.Delay * (3/5))
 	self:SetLMT(CurTime())
 	self:SetFAT(CurTime() + self.Secondary.Delay)
 	self.FAT = CurTime() + self.Secondary.Delay

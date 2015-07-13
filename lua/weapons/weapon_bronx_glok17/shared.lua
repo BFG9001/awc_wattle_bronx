@@ -45,6 +45,10 @@ SWEP.Secondary.ClipSize 		= -1
 SWEP.Secondary.DefaultClip 		= -1
 SWEP.Secondary.Ammo 			= "none"
 SWEP.Secondary.Automatic 		= true
+--Melee stuff
+SWEP.Secondary.Damage = 20
+SWEP.Secondary.Delay = .75
+SWEP.Secondary.Sound = Sound("weapons/slam/throw.wav")
 
 SWEP.UseHands 					= true
 SWEP.AccurateCrosshair 			= false
@@ -61,7 +65,7 @@ SWEP.Primary.ClumpCone			= 0
 SWEP.Primary.Tracer				= 1
 
 
-SWEP.RecoilPitchAdd 			= 3
+SWEP.RecoilPitchAdd 			= 1.5
 SWEP.RecoilPitchMul 			= 0.1
 SWEP.RecoilYawAdd 				= 0.5
 SWEP.RecoilYawMul 				= 0.01
