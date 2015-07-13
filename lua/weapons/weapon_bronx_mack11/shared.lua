@@ -55,7 +55,7 @@ SWEP.AccurateCrosshair 			= false
 ---------
 SWEP.HoldType = "smg"
 
-SWEP.Primary.Damage 			= 25
+SWEP.Primary.Damage 			= 21
 SWEP.Primary.DamageFalloff		= 0.02
 SWEP.Primary.Sound				= Sound("Weapon_MP5Navy.Single")
 SWEP.Primary.NumShots			= 1
