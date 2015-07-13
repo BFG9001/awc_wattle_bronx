@@ -47,7 +47,7 @@ SWEP.Secondary.DefaultClip 		= -1
 SWEP.Secondary.Ammo 			= "none"
 SWEP.Secondary.Automatic 		= false
 --Melee stuff
-SWEP.Secondary.Damage = 22
+SWEP.Secondary.Damage = 15
 SWEP.Secondary.Delay = .8
 SWEP.Secondary.Sound = Sound("weapons/slam/throw.wav")
 
@@ -56,13 +56,13 @@ SWEP.AccurateCrosshair 			= false
 ---------
 SWEP.HoldType 					= "shotgun"
 
-SWEP.Primary.Damage 			= 20
+SWEP.Primary.Damage 			= 25
 SWEP.Primary.DamageFalloff		= 0.15
 SWEP.Primary.Sound				= Sound("weapons/xm1014/xm1014-1.wav")
 SWEP.Primary.NumShots			= 9
 SWEP.Primary.Delay				= 60/80
-SWEP.Primary.Cone				= 0.03
-SWEP.Primary.ClumpCone			= 0.11
+SWEP.Primary.Cone				= 0.01
+SWEP.Primary.ClumpCone			= 0.1
 SWEP.Primary.Tracer				= 1
 SWEP.Primary.TracerName			= "Tracer"
 --SWEP.Primary.MuzzleEffects		= { "effect_wat_muzzle_flash", "effect_wat_muzzle_smoke", "effect_wat_muzzle_sparks" }

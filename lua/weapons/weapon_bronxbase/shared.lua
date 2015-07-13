@@ -62,7 +62,7 @@ SWEP.Primary.TracerName			= "Tracer"
 SWEP.Primary.MuzzleEffects		= { "effect_bronx_muzzleflash", "effect_wat_muzzle_smoke", "effect_wat_muzzle_sparks" }
 
 --Melee stuff
-SWEP.Secondary.Damage = 20
+SWEP.Secondary.Damage = 15
 SWEP.Secondary.Delay = .85
 SWEP.Secondary.Sound = Sound("weapons/slam/throw.wav")
 

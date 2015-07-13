@@ -47,7 +47,7 @@ SWEP.Secondary.DefaultClip 		= -1
 SWEP.Secondary.Ammo 			= "none"
 SWEP.Secondary.Automatic 		= false
 --Melee stuff
-SWEP.Secondary.Damage = 27
+SWEP.Secondary.Damage = 18
 SWEP.Secondary.Delay = .9
 SWEP.Secondary.Sound = Sound("weapons/slam/throw.wav")
 
