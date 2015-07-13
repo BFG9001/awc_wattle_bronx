@@ -53,7 +53,7 @@ SWEP.Secondary.Sound = Sound("weapons/slam/throw.wav")
 SWEP.UseHands 					= true
 SWEP.AccurateCrosshair 			= false
 ---------
-SWEP.HoldType = "ar2"
+SWEP.HoldType = "pistol"
 
 SWEP.Primary.Damage 			= 36
 SWEP.Primary.DamageFalloff		= 0.001
