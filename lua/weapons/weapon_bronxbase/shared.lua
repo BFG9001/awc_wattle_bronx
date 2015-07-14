@@ -132,10 +132,11 @@ end
 function SWEP:MeleeAttack()
 	--if CLIENT and not IsFirstTimePredicted() then return end
 	self:GetOwner():ViewPunch( Angle( 3, 3, 15) )
-	self:SetHoldType("melee2")
-	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
+	--self:SetHoldType("melee2")
+	--self:GetOwner():SetAnimation(PLAYER_ATTACK1)
+	self:GetOwner():SetSequence(364)
 
-	timer.Simple( 0, function() if not IsValid(self) then return end self:SetHoldType(self.HoldType) end)
+	--timer.Simple( 0, function() if not IsValid(self) then return end self:SetHoldType(self.HoldType) end)
 
 	--if SERVER then
 		local radius = 36
@@ -145,7 +146,13 @@ function SWEP:MeleeAttack()
 
 		local tr = self:GetOwner():GetEyeTrace()
 			if tr.HitPos:Distance(self:GetOwner():GetShootPos()) < 64 then
-				if tr.Entity == game.GetWorld() then if SERVER then self:GetOwner():EmitSound("physics/body/body_medium_impact_hard" .. math.random(1,6) .. ".wav") end local fx = EffectData() fx:SetOrigin(tr.HitPos) util.Effect("effect_bronx_meleeimpact", fx) end
+				if tr.Entity == game.GetWorld() then 
+					if SERVER then 
+						self:GetOwner():EmitSound("physics/body/body_medium_impact_hard" .. math.random(1,6) .. ".wav") 
+					end 
+					local fx = EffectData() 
+					fx:SetOrigin(tr.HitPos) 
+					util.Effect("effect_bronx_meleeimpact", fx) end
 			end
 
 		local dmginfo = DamageInfo()
