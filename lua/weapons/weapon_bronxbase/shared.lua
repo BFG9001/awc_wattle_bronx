@@ -145,7 +145,7 @@ function SWEP:MeleeAttack()
 
 		local tr = self:GetOwner():GetEyeTrace()
 			if tr.HitPos:Distance(self:GetOwner():GetShootPos()) < 64 then
-				if tr.Entity == game.GetWorld() then self:GetOwner():EmitSound("physics/body/body_medium_impact_hard" .. math.random(1,6) .. ".wav") local fx = EffectData() fx:SetOrigin(tr.HitPos) util.Effect("effect_bronx_meleeimpact", fx) end
+				if tr.Entity == game.GetWorld() then if SERVER then self:GetOwner():EmitSound("physics/body/body_medium_impact_hard" .. math.random(1,6) .. ".wav") end local fx = EffectData() fx:SetOrigin(tr.HitPos) util.Effect("effect_bronx_meleeimpact", fx) end
 			end
 
 		local dmginfo = DamageInfo()
@@ -162,7 +162,7 @@ function SWEP:MeleeAttack()
 				--v:SetVelocity(self:GetOwner():GetAimVector() * 500)
 			end
 			if IsValid(v) then 
-				v:EmitSound("physics/body/body_medium_impact_hard" .. math.random(1,6) .. ".wav") 
+				if SERVER then v:EmitSound("physics/body/body_medium_impact_hard" .. math.random(1,6) .. ".wav") end
 				local trace = util.TraceHull({start = self:GetOwner():GetShootPos(), endpos = v:LocalToWorld(v:OBBCenter()), filter = function(ent) if ent == v then return true end end})
 					local fx = EffectData()
 						fx:SetOrigin(trace.HitPos + Vector(0,0,16))
