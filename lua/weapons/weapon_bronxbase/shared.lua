@@ -130,7 +130,7 @@ function SWEP:SecondaryAttack() --Melee attack
 end
 
 function SWEP:MeleeAttack()
-	if CLIENT and not IsFirstTimePredicted() then return end
+	--if CLIENT and not IsFirstTimePredicted() then return end
 	self:GetOwner():ViewPunch( Angle( 3, 3, 15) )
 	self:SetHoldType("melee2")
 	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
