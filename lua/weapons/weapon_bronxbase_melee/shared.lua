@@ -55,7 +55,7 @@ SWEP.AccurateCrosshair 			= false
 ---------
 SWEP.HoldType = "melee2"
 
-SWEP.Primary.Damage 			= 25
+SWEP.Primary.Damage 			= 50
 SWEP.Primary.DamageFalloff		= 0.02
 SWEP.Primary.Sound				= Sound("weapons/slam/throw.wav")
 SWEP.Primary.NumShots			= 1
@@ -111,3 +111,77 @@ SWEP.ViewModelBoneMods = {}
 SWEP.VElements = {}
 SWEP.WElements = {}
 
+
+SWEP.MeleeWepStunChancePercent = 25
+SWEP.HitSound = Sound("weapons/crowbar/crowbar_impact1.wav")
+
+function SWEP:Reload()
+end
+
+function SWEP:CanPrimaryAttack()
+	return true
+end
+
+function SWEP:PrimaryAttack() --Melee attack
+	--if(self.Owner:KeyDown(IN_USE)) then return end --Weapon inspection
+	self:SetNextSecondaryFire(CurTime() + self.Primary.Delay)
+	self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
+	--self:SetLMT(CurTime())
+	self:SetFAT(CurTime() + self.Primary.Delay)
+	self.FAT = CurTime() + self.Primary.Delay
+	self:EmitSound(self.Primary.Sound)
+	self:SendWeaponAnim(self.MeleeAnimEnum or ACT_VM_MISSCENTER)
+	--print("rip")
+	self:GetOwner():LagCompensation(true)
+	self:StrongMeleeAttack()
+	self:GetOwner():LagCompensation(false)
+end
+
+function SWEP:StrongMeleeAttack()
+	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
+
+	timer.Simple( .33, function() if not IsValid(self) then return end self:SetHoldType(self.HoldType) end)
+
+	--if SERVER then
+		local radius = 36
+		local origin = self:GetOwner():GetShootPos() + (self:GetOwner():EyeAngles():Forward() * (radius - 3))
+		local targets = ents.FindInSphere( origin, radius )
+		table.RemoveByValue( targets, self:GetOwner() )
+
+		local tr = self:GetOwner():GetEyeTrace()
+			if tr.HitPos:Distance(self:GetOwner():GetShootPos()) < 64 then
+				if tr.Entity == game.GetWorld() then 
+					if SERVER then 
+						self:GetOwner():EmitSound(self.HitSound) 
+					end 
+					local fx = EffectData() 
+					fx:SetOrigin(tr.HitPos) 
+					util.Effect("effect_bronx_powspark", fx) end
+			end
+
+		local dmginfo = DamageInfo()
+			dmginfo:SetAttacker(self:GetOwner())
+			dmginfo:SetInflictor(self)
+			dmginfo:SetDamage(self.Primary.Damage)
+			dmginfo:SetDamageType(DMG_CLUB)
+			dmginfo:SetDamageForce( self:GetOwner():GetAimVector() * 1000 )
+
+		for k, v in pairs( targets ) do
+			if v:IsWeapon() then continue end
+			if IsValid(v) and v.IsBronxCitizen and SERVER then
+				local stunRandom = math.random(1, 100)
+				if stunRandom <= self.MeleeWepStunChancePercent then
+					v:BronxMeleeStun()
+				end
+			end
+			if IsValid(v) then 
+				if SERVER then v:EmitSound(self.HitSound) end
+				local trace = util.TraceHull({start = self:GetOwner():GetShootPos(), endpos = v:LocalToWorld(v:OBBCenter()), filter = function(ent) if ent == v then return true end end})
+					local fx = EffectData()
+						fx:SetOrigin(trace.HitPos + Vector(0,0,16))
+						util.Effect("effect_bronx_powspark", fx)
+			end
+			if SERVER then v:TakeDamageInfo(dmginfo) end
+		end
+	--end --if SERVER then
+end
