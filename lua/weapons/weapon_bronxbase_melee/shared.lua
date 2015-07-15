@@ -112,7 +112,7 @@ SWEP.VElements = {}
 SWEP.WElements = {}
 
 
-SWEP.MeleeWepStunChancePercent = 25
+SWEP.MeleeWepStunChancePercent = 10
 SWEP.HitSound = Sound("weapons/crowbar/crowbar_impact1.wav")
 
 function SWEP:Reload()
@@ -143,7 +143,7 @@ function SWEP:StrongMeleeAttack()
 	timer.Simple( .33, function() if not IsValid(self) then return end self:SetHoldType(self.HoldType) end)
 
 	--if SERVER then
-		local radius = 36
+		local radius = 25
 		local origin = self:GetOwner():GetShootPos() + (self:GetOwner():EyeAngles():Forward() * (radius - 3))
 		local targets = ents.FindInSphere( origin, radius )
 		table.RemoveByValue( targets, self:GetOwner() )
