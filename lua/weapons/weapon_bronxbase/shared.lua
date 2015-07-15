@@ -132,11 +132,11 @@ end
 function SWEP:MeleeAttack()
 	--if CLIENT and not IsFirstTimePredicted() then return end
 	self:GetOwner():ViewPunch( Angle( 3, 3, 15) )
-	--self:SetHoldType("melee2")
-	--self:GetOwner():SetAnimation(PLAYER_ATTACK1)
-	self:GetOwner():SetSequence(364)
+	self:SetHoldType("melee2")
+	self:GetOwner():SetAnimation(PLAYER_ATTACK1)
+	--self:GetOwner():SetSequence(364)
 
-	--timer.Simple( 0, function() if not IsValid(self) then return end self:SetHoldType(self.HoldType) end)
+	timer.Simple( .33, function() if not IsValid(self) then return end self:SetHoldType(self.HoldType) end)
 
 	--if SERVER then
 		local radius = 25
